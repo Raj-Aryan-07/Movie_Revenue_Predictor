@@ -170,6 +170,31 @@ The notebook covers the complete ML workflow:
 
 ---
 
+## 📉 Model Performance & Limitations
+
+The model produces **reasonable directional estimates** but has a **low R² score** — meaning it explains only a modest portion of the variance in actual box-office revenue. This is expected and well-documented in the movie revenue prediction literature.
+
+### Why the R² score is low
+
+| Reason | Explanation |
+|---|---|
+| **Too few features Used** | The model only sees 4 inputs: genre, year, budget, and runtime. Movie success is driven by dozens of other factors not captured here. |
+| **Missing critical signals** | Star power (cast & director), marketing spend, critic/audience reviews, social media buzz, and competition at release date are all absent. |
+| **Highly skewed revenue distribution** | A handful of blockbusters (Marvel, Avatar, etc.) earn 10–100× the average. This extreme variance makes accurate regression very hard. |
+| **Noisy dataset** | The TMDB dataset contains many entries where budget or revenue is listed as `0` (unreported), adding significant noise to training. |
+| **Inherent unpredictability** | Even Hollywood studios with full production data and experienced analysts routinely mis-forecast box-office performance. Revenue is partly driven by cultural moments and timing that no model can quantify. |
+| **No log-transformation on target** | Revenue spans several orders of magnitude ($10K → $2B+). Without log-scaling the target variable, the model is penalised heavily by outlier blockbusters. |
+
+### What the model is still useful for
+
+- **Ballpark estimates** — gives a reasonable order-of-magnitude for expected revenue
+- **Relative comparisons** — comparing two hypothetical movies under the same conditions
+- **Educational demonstration** — end-to-end ML pipeline: data → model → deployed web app
+
+> 💡 **Improving the model:** Better performance could be achieved by adding cast popularity scores, director track record, trailer sentiment (the `movies_youtube_sentiments.csv` dataset is already available!), marketing budget, and applying a log transform to the revenue target before training.
+
+---
+
 ## 🔧 Customising the Model
 
 To swap in your own model, edit the **"PUT / LOAD YOUR TRAINED MODEL HERE"** section near the top of `app.py`. The app supports:
